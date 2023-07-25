@@ -1,0 +1,1314 @@
+console.log("Your user id is");
+var ownerId = "dW8hY1ATkqqHgHMFGfqzt2axrr8";
+var ownerName = "Akshaj";
+console.log(getUserId());
+var msg = [];
+textFont("arial");
+var admins = [];
+var banned = [];
+var serverNames = ["Annoucement"];
+var extendedCooldown = [];
+var isTyping = true;
+var user = "";
+var wait = 0;
+var mobileMode = false;
+var input = "";
+var spin = 0;
+var bgImage = createSprite(200, 200);
+var lastUpdated = getTime();
+var shadow = createSprite();
+var coins = 0;
+var chatCensor = true;
+var room = "home";
+var framesSinceRoomChange = 0;
+shadow.setAnimation("shadow");
+shadow.x = 370;
+shadow.y = 370;
+shadow.scale = 1;
+var logo = createSprite();
+var showCursor = true;
+var keepCursor = false;
+logo.setAnimation("str");
+logo.x = 370;
+logo.y = 370;
+logo.scale = 0.4;
+var coinSprite = createSprite();
+coinSprite.setAnimation("invis");
+coinSprite.x = 335;
+coinSprite.y = 15;
+coinSprite.scale = 0.3;
+var animForward = true;
+var cooldown = 1;
+var views = 0;
+var safe = true;
+var backspaceActive = 0;
+var Screen = "Home";
+var currentTheme = "classic";
+var myThemes = ["classic"];
+var purchasingTheme = false;
+var themes = {
+  "classic": ({
+    name: "Classic",
+    price: 0,
+    desc: "The classic ",
+    bg: "#3f1564",
+    color: "white",
+    input: rgb(255, 255, 255, 0.1),
+    theme: "dodgerblue"
+  }),
+  "glitched": ({
+    name: "Ğłįťčħęđ",
+    price: 50,
+    desc: "Œ ǸŒ",
+    bg: "#151617",
+    color: "white",
+    input: "#232425",
+    theme: "#D74726",
+    image: "BG: Glitch",
+    opacity: 1
+  }),
+  "lightmode": {
+    name: "Light Mode",
+    price: 10,
+    desc: "The classic theme, except it hurts your eyes!",
+    bg: "white",
+    color: "black",
+    input: "lightgray",
+    theme: "#D74726"
+  },
+  "purple": {
+    name: "Purple",
+    price: 50,
+    desc: "A nice, deep purple that's easy on the eyes.",
+    bg: "#663399",
+    color: "white",
+    input: "rgba(0, 0, 0, 0.1)",
+    theme: "white"
+  },
+  "blue": ({
+    name: "Blue",
+    price: 50,
+    desc: "Dah boo dee dah boo dah.",
+    bg: "dodgerblue",
+    color: "white",
+    input: "rgba(0, 0, 0, 0.1)",
+    theme: "white"
+  }),
+  "green": {
+    name: "Green",
+    price: 50,
+    desc: "Green is the color of trees, grass, and speeding violations.",
+    bg: "limegreen",
+    color: "white",
+    input: "rgba(0, 0, 0, 0.1)",
+    theme: "white"
+  },
+  "red": {
+    name: "Red",
+    price: 50,
+    desc: "A good theme for anyone who likes blood.",
+    bg: "tomato",
+    color: "white",
+    input: "rgba(0, 0, 0, 0.1)",
+    theme: "white"
+  },
+  "yellow": ({
+    name: "Yellow",
+    price: 1000000,
+    desc: "It's like Gold, except much smaller and meaningless.",
+    bg: "gold",
+    color: "white",
+    input: "rgba(0, 0, 0, 0.1)",
+    theme: "white"                                            
+  }),
+  "gold": ({
+    name: "Gold",
+    price: 250,
+    desc: "OK, now you're just showing off.",
+    bg: "gold",
+    color: rgb(30, 30, 0),
+    input: rgb(255, 255, 255, 0.2),
+    theme: "goldenrod",
+    image: "BG: Shine",
+    opacity: 0.5
+  }),
+  "chocolate": ({
+    name: "Chocolate",
+    price: 100000,
+    desc: "Unfortunately, this theme isn't edible.",
+    bg: "saddlebrown",
+    color: "white",
+    input: "sienna",
+    theme: "chocolate"
+  }),
+  "cottoncandy": {
+    name: "Cotton Candy",
+    price: 50,
+    desc: "Light and fluffy, like a cloud!",
+    bg: "plum",
+    color: "black",
+    input: rgb(255, 255, 255, 0.3),
+    theme: "mediumslateblue",
+    image: "BG: Abstract Clouds",
+    opacity: 0.2
+  },
+  "popcorn": {
+    name: "Popcorn",
+    price: 50,
+    desc: "Corny ahh :skull:",
+    bg: "#ffff33",
+    color: "black",
+    input: rgb(255, 255, 255, 0.4),
+    theme: "gold"
+  },
+  "monochrome": {
+    name: "Monochrome",
+    price: 25,
+    desc: "Only black and white. Except for the other buttons.",
+    bg: "black",
+    color: "white",
+    input: "black",
+    theme: "white"
+  },
+  "silver": {
+    name: "Silver",
+    price: 250,
+    desc: "A second-rate light theme!",
+    bg: "darkgray",
+    color: "black",
+    input: "lightgray",
+    theme: "gray",
+    image: "BG: Shine",
+    opacity: 0.5
+  },
+  "blinding": {
+    name: "Blinding",
+    price: 25,
+    desc: "Light Mode - The Weeknd",
+    bg: rgb(240, 240, 240),
+    color: "gray",
+    input: "white",
+    theme: "lightgray"
+  },
+  "nightsky": ({
+    name: "Night Sky",
+    price: 50,
+    desc: "A chill dark blue, almost as dark as the night sky and dark's toe's.",
+    bg: rgb(30, 20, 60),
+    color: "white",
+    input: rgb(255, 255, 255, 0.1),
+    theme: "dodgerblue",
+    image: "BG: Stars",
+    opacity: 0.5
+  }),
+  "pink": {
+    name: "Pink",
+    price: 50,
+    desc: "It's just pink.",
+    bg: "violet",
+    color: "white",
+    input: "rgba(0, 0, 0, 0.1)",
+    theme: "white"
+  }
+};
+var shopThemes = [];
+var ignoreTheme = false;
+getKeyValue("views", function (rec) {
+  if (typeof rec == "number") {
+    setKeyValue("views", rec+1);
+  } else {
+    setKeyValue("views", 1);
+  }
+});
+var currentlyTyping = "";
+var rank = "Guest";
+var typeTimeout = 0;
+function draw() {
+  s = themes[currentTheme];
+  if (typeof s != "object") {
+    currentTheme = "classic";
+    s = themes[currentTheme];
+  }
+  if (s.image != undefined) {
+    bgImage.setAnimation(s.image);
+    bgImage.x = camera.x;
+  } else {
+    bgImage.setAnimation("invis");
+  }
+  if ((Screen == "Home" || Screen == "Shop") && camera.x > 200) {
+    coinSprite.x = camera.x + 135;
+  } else {
+    coinSprite.x = 335;
+  }
+  if (Screen == "Theme") {
+    showMobileControls(false, true, true, true);
+  } else {
+    showMobileControls(false, false, false, false);
+  }
+  switch (Screen) {
+    case "Home":
+      camera.x += (200-camera.x)/5;
+      break;
+    case "Shop":
+      camera.x += (600-camera.x)/5;
+      break;
+    case "Theme":
+      camera.x += (-200-camera.x)/5;
+      break;
+  }
+  coinSprite.rotation = Math.sin(World.frameCount/10)*20;
+  background("#2B3467");
+  fill("#97DEFF");
+  noStroke();
+  shape(0, 375, 400, 375, 400, 400, 0, 400);
+  textSize(15);
+  fill("#408E91");
+  textAlign(LEFT, CENTER);
+  if (input == "" || mobileMode) {
+    if (isTyping && showCursor && !mobileMode) {
+      text("|", 5, 388);
+    }
+    fill("#3A1078");
+    if (mobileMode) {
+      text("Click here to type.", 8, 388);
+    } else {
+      text("Type down Here", 8, 388);
+    }
+  } else {
+    var censoredInput = input;
+    if (chatCensor) {
+      censoredInput = censor(input);
+    }
+    if (isTyping && showCursor && !mobileMode) {
+      text(censoredInput + "|", 5, 388);
+    } else {
+      text(censoredInput, 5, 388);
+    }
+  }
+  textSize(12);
+  if (!safe) {
+    text("Loading...", 360, 40);
+    coinSprite.visible = false;
+  } else if (user == "") {
+    fill(s.input);
+    shape(325, 5, 395, 5, 395, 25, 325, 25);
+    textAlign(CENTER, BASELINE);
+    fill(s.color);
+    text("Sign Up", 360, 20);
+    fill(s.color);
+    rank = "guest";
+    text("Guest Mode", 360, 40);
+    coinSprite.visible = false;
+  } else {
+    coinSprite.visible = true;
+    textAlign(RIGHT, CENTER);
+    fill("#ECF2FF");
+    text(coins.toLocaleString(), coinSprite.x + 60, coinSprite.y);
+    textAlign(CENTER, BASELINE);
+    if (admins.indexOf(encodeURIComponent(getUserId())) >= 0 || ownerId == getUserId()) {
+      if (ownerId == getUserId()) {
+        fill("#ECF2FF");
+        rank = "Owner";
+        text("Owner", 360, 40);
+      } else {
+        fill("#ECF2FF");
+        rank = "Admin";
+        text("Admin", 360, 40);
+      }
+      fill(s.input);
+      shape(325, 45, 395, 45, 395, 65, 325, 65);
+      fill("#BFDCE5");
+      text("Clear Chat", 360, 60);
+      fill(s.input);
+      shape(325, 70, 395, 70, 395, 90, 325, 90);
+      fill("#BFDCE5");
+      text("Block", 360, 85);
+      fill(s.input);
+      shape(325, 95, 395, 95, 395, 115, 325, 115);
+      fill("#BFDCE5");
+      text("announce", 360, 110);
+      if (getUserId() == ownerId) {
+        fill(s.input);
+        shape(325, 120, 395, 120, 395, 140, 325, 140);
+        fill("#BFDCE5");
+        text("Admins", 360, 135);
+      }
+      fill(s.input);
+      shape(325, 145, 395, 145, 395, 165, 325, 165);
+      fill("#BFDCE5");
+      text("Cooldown", 360, 160);
+    } else {
+      fill(s.input);
+      text("User", 360, 40);
+    }
+  }
+  textAlign(CENTER, BASELINE);
+  fill(s.input);
+  shape(325, 170, 395, 170, 395, 190, 325, 190);
+  fill("#BFDCE5");
+  text("About Owner", 360, 185);
+  fill(s.input);
+  shape(325, 195, 395, 195, 395, 215, 325, 215);
+  fill("#BFDCE5");
+  text("Rules", 360, 210);
+  fill(s.input);
+  shape(325, 220, 395, 220, 395, 240, 325, 240);
+  if (mobileMode) {
+    fill("#B9F3E4");
+  } else {
+    fill("#BFDCE5");
+  }
+  textSize(10);
+  text("Mobile Mode", 360, 234);
+  fill(s.input);
+  shape(325, 245, 395, 245, 395, 265, 325, 265);
+  if (chatCensor) {
+    fill("#B9F3E4");
+  } else {
+    fill("#BFDCE5");
+  }
+  textSize(12);
+  text("Censor", 360, 260);
+  fill(s.input);
+  shape(325, 270, 395, 270, 395, 290, 325, 290);
+  fill("#BFDCE5");
+  textSize(12);
+  text("Shop", 360, 285);
+  fill(s.input);
+  shape(325, 295, 395, 295, 395, 315, 325, 315);
+  fill("#BFDCE5");
+  textSize(12);
+  text("Theme", 360, 310);
+  fill(s.input);
+  shape(325, 320, 395, 320, 395, 340, 325, 340);
+  fill("#BFDCE5");
+  textSize(12);
+  text("Room", 360, 335);
+  getKeyValue("username" + encodeURIComponent(getUserId()), function (rec) {
+    if (typeof rec == "string") {
+      user = formatUsername(rec);
+      lastUpdated = getTime();
+    } else {
+      user = "";
+    }
+    safe = true;
+  });
+  getKeyValue("themes" + encodeURIComponent(getUserId()), function (rec) {
+    if (typeof rec == "object" && rec != null) {
+      myThemes = rec;
+      lastUpdated = getTime();
+    } else {
+      setKeyValue("themes" + encodeURIComponent(getUserId()), ["classic"]);
+    }
+  });
+  getKeyValue("shop", function (rec) {
+    if (typeof rec == "object" && rec != null) {
+      shopThemes = rec;
+      lastUpdated = getTime();
+    } else {
+      shopThemes = [rec];
+    }
+  });
+  getKeyValue("theme" + encodeURIComponent(getUserId()), function (rec) {
+    if (typeof rec == "string") {
+      if (!ignoreTheme) {
+        currentTheme = rec;
+      }
+      lastUpdated = getTime();
+    } else {
+      setKeyValue("theme" + encodeURIComponent(getUserId()), "classic");
+    }
+  });
+  getKeyValue("coins" + encodeURIComponent(getUserId()), function (rec) {
+    if (typeof rec == "number") {
+      if (rec > 999999) {
+        coins = 999999;
+      } else if ((rec < 1)) {
+        coins = 1000;
+      } else {
+        coins = Math.floor(rec);
+      }
+      lastUpdated = getTime();
+    } else {
+      setKeyValue("coins" + encodeURIComponent(getUserId()), 0);
+    }
+  });
+  getKeyValue("msg" + formatUsername(room + " "), function (rec) {
+    if (typeof rec == "object" && rec != null) {
+      if (rec.length != undefined && Object.keys(rec).indexOf("length") < 0) {
+        msg = rec;
+        lastUpdated = getTime();
+      }
+    } else {
+      setKeyValue("msg" + formatUsername(room + " "), []);
+    }
+  });
+  getKeyValue("ownerName", function (rec) {
+    if (typeof rec == "string") {
+      ownerName = rec;
+      lastUpdated = getTime();
+    }
+  });
+  getKeyValue("admins", function (rec) {
+    if (typeof rec == "object" && rec != null) {
+      if (rec.length != undefined && Object.keys(rec).indexOf("length") < 0) {
+        admins = rec;
+        lastUpdated = getTime();
+      }
+    } else {
+      setKeyValue("admins", []);
+    }
+  });
+  getKeyValue("banned", function (rec) {
+    if (typeof rec == "object" && rec != null) {
+      if (rec.length != undefined && Object.keys(rec).indexOf("length") < 0) {
+        banned = rec;
+        lastUpdated = getTime();
+      }
+    } else {
+      setKeyValue("banned", []);
+    }
+  });
+  getKeyValue("font", function (rec) {
+    if ((typeof rec == "string" || rec != "system-ui") && rec != null) {
+      textFont(rec);
+      lastUpdated = getTime();
+    } else {
+      textFont("sANs");
+    }
+  });
+  getKeyValue("extendedCooldown", function (rec) {
+    if (typeof rec == "object" && rec != null) {
+      if (rec.length != undefined && Object.keys(rec).indexOf("length") < 0) {
+        extendedCooldown = rec;
+        lastUpdated = getTime();
+        if (extendedCooldown.indexOf(encodeURIComponent(getUserId())) >= 0) {
+          cooldown = 10;
+        } else {
+          cooldown = 1;
+        }
+      }
+    } else {
+      setKeyValue("extendedCooldown", []);
+    }
+  });
+  getKeyValue("views", function (rec) {
+    if (typeof rec == "number") {
+      views = rec;
+      lastUpdated = getTime();
+    } else {
+      setKeyValue("Messenger's User", 1);
+    }
+  });
+  var y = 5;
+  for (var i = msg.length-9; i < msg.length; i++) {
+    if (msg[i] != undefined) {
+      fill(s.input);
+      noStroke();
+      shape(5, y, 320, y, 320, y+35, 5, y+35);
+      if (mouseWentDown("left") && World.mouseX >= 5 && World.mouseX <= 320 && World.mouseY >= y && World.mouseY <= y+35 && (rank == "Admin" || rank == "Owner") && Screen == "Home") {
+        prompt(formatUsername(msg[i].user) + "'s User ID:", msg[i].uid);
+      }
+      y += 40;
+      var isOwner = false;
+      if (msg[i].uid == encodeURIComponent(ownerId)) {
+        isOwner = true;
+      } else if ((msg[i].uid == "mod")) {
+        fill("#B4E4FF");
+      } else if (admins.indexOf(msg[i].uid) >= 0) {
+        fill("#95BDFF");
+      } else if (banned.indexOf(msg[i].uid) >= 0) {
+        fill("#BFDCE5");
+      } else {
+        fill(s.color);
+      }
+      textSize(20);
+      textAlign(LEFT, BASELINE);
+      if (isOwner) {
+        fill("blue");
+        text(formatUsername(msg[i].user), 10, y-22);
+        text(formatUsername(msg[i].user), 10, y-24);
+        fill("blue");
+        text(formatUsername(msg[i].user), 9, y-23);
+        text(formatUsername(msg[i].user), 11, y-23);
+        fill("white");
+        text(formatUsername(msg[i].user), 10, y-23);
+      } else if ((msg[i].uid != "Server" || (msg[i].uid == "Server" && serverNames.indexOf(msg[i].user) >= 0)) && formatUsername(msg[i].user).length >= 3) {
+        text(formatUsername(msg[i].user, msg[i].uid), 10, y-23);
+      }  else {
+        fill("#ECF2FF");
+        text("Announcement", 10, y-23);
+      }
+      textSize(12);
+      fill(rgb(255, 255, 255, 0.5));
+      textAlign(RIGHT, BASELINE);
+      text(formatTime(msg[i].time), 315, y-23);
+      textAlign(LEFT, BASELINE);
+      fill(s.color);
+      textSize(12);
+      if (typeof msg[i].msg == "string" && msg[i].uid != "Server" || (msg[i].uid == "Server" && serverNames.indexOf(msg[i].user) >= 0)) {
+        if (msg[i].msg.length > 0) {
+          if (chatCensor) {
+            text(censor(msg[i].msg.substring(0,50)), 10, y-10);
+          } else {
+            text(msg[i].msg.substring(0,50), 10, y-10);
+          }
+        } else {
+          fill("#E3DFFD");
+          text("Chat Cleared by Admin/Owner", 10, y-10);
+        }
+      } else {
+        fill("#E3DFFD");
+        text("Chat Cleared by Admin/Owner", 10, y-10);
+      }
+    }
+  }
+  if (mouseWentDown("left")) {
+    if (World.mouseX >= 325 && World.mouseY >= 5 && World.mouseX <= 395 && World.mouseY <= 25 && Screen == "Home") {
+      if (user == "" && safe) {
+        var x = prompt("What Should your Username be?");
+        if (typeof x == "string") {
+          if (formatUsername(x).length >= 3) {
+            getKeyValue("userTaken" + formatUsername(x + " "), function (re) {
+              if (censor(formatUsername(x)).includes("*") || re == true) {
+                prompt("What Should your Username be?");
+              } else {
+                setKeyValue("username" + encodeURIComponent(getUserId()), formatUsername(x + " "), function () {
+                  user = x;
+                });
+                setKeyValue("userTaken" + formatUsername(x + " "), true);
+              }
+            });
+          } else {
+            prompt("Nickname Not Long Enough");
+          }
+        } else {
+          user = "";
+        }
+      } else {
+        prompt("You have " + coins.toLocaleString() + " " + (coins == 1 ? "coin" : "coins") + ". You earn coins for chatting and you can spend them in the Theme Shop to get themes.");
+      }
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 45 && World.mouseX <= 395 && World.mouseY <= 65 && (rank == "Admin" || rank == "Owner") && Screen == "Home") {
+      setKeyValue("msg" + formatUsername(room + " "), [({
+        uid: encodeURIComponent("Server"),
+        user: "Server",
+        time: getTime(),
+        msg: ("existence wiped by " + user) + "."
+      })]);
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 70 && World.mouseX <= 395 && World.mouseY <= 90 && (rank == "Admin" || rank == "Owner") && Screen == "Home") {
+      var b = prompt("Enter a user's User ID to Block them, or enter a Blocked user's ID to unblock them. You can check a user's User ID by clicking on one of their messages. (You can also type \"first\", \"last\", and \"all\".) Blocked users:\n" + banned.join("\n"));
+      if (b != null) {
+        getKeyValue("banned", function (rec) {
+          if (b == "first") {
+            rec.splice(0, 1);
+          } else if (b == "last") {
+            rec.splice(rec.length-1, 1);
+          } else if (b == "all") {
+            rec = [];
+          } else if (rec.indexOf(b) >= 0) {
+            rec.splice(rec.indexOf(b), 1);
+          } else {
+            rec.push(b);
+          }
+          setKeyValue("banned", rec);
+        });
+      }
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 95 && World.mouseX <= 395 && World.mouseY <= 115 && (rank == "Admin" || rank == "Owner") && Screen == "Home") {
+      var c = prompt("What do you wanna announce?");
+      if (c != null) {
+        getKeyValue("msg" + formatUsername(room + " "), function (rec) {
+          if (typeof rec == "object") {
+            rec.push({
+              uid: encodeURIComponent("Server"),
+              user: "Announcement",
+              time: getTime(),
+              msg: c
+            });
+            setKeyValue("msg" + formatUsername(room + " "), rec);
+          } else {
+            setKeyValue("msg" + formatUsername(room + " "), {
+              uid: (encodeURIComponent("Server")),
+              user: "Announcement",
+              time: getTime(),
+              msg: c
+            });
+          }
+        });
+      }
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 120 && World.mouseX <= 395 && World.mouseY <= 140 && (rank == "Owner") && Screen == "Home") {
+      var ad = prompt("Enter a user's User ID to make them an admin, or enter an admins's ID to un-admin them. You can check a user's User ID by clicking on one of their messages. (You can also type \"first\", \"last\", and \"all\".) Admins:\n" + admins.join("\n"));
+      if (ad != null) {
+        getKeyValue("admins", function (rec) {
+          if (ad == "first") {
+            rec.splice(0, 1);
+          } else if (ad == "last") {
+            rec.splice(rec.length-1, 1);
+          } else if (ad == "all") {
+            rec = [];
+          } else if (rec.indexOf(ad) >= 0) {
+            rec.splice(rec.indexOf(ad), 1);
+          } else {
+            rec.push(ad);
+          }
+          setKeyValue("admins", rec);
+        });
+      }
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 145 && World.mouseX <= 395 && World.mouseY <= 165 && (rank == "Admin" || rank == "Owner") && Screen == "Home") {
+      var eC = prompt("Enter a user's User ID to extend their cooldown to 10 seconds, or enter an affected user's ID to reset their cooldown. You can check a user's User ID by clicking on one of their messages. (You can also type \"first\", \"last\", and \"all\".) Users with extended cooldowns:\n" + extendedCooldown.join("\n"));
+      if (eC != null) {
+        getKeyValue("extendedCooldown", function (rec) {
+          if (eC == "first") {
+            rec.splice(0, 1);
+          } else if (eC == "last") {
+            rec.splice(rec.length-1, 1);
+          } else if (eC == "all") {
+            rec = [];
+          } else if (rec.indexOf(eC) >= 0) {
+            rec.splice(rec.indexOf(eC), 1);
+          } else {
+            rec.push(eC);
+          }
+          setKeyValue("extendedCooldown", rec);
+        });
+      }
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 170 && World.mouseX <= 395 && World.mouseY <= 190 && Screen == "Home") {
+      prompt("The guy who made this chat first! *big shoutout 2 him lol*", " ");
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 195 && World.mouseX <= 395 && World.mouseY <= 215 && Screen == "Home") {
+      prompt("Be supportive!", " ");
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 220 && World.mouseX <= 395 && World.mouseY <= 240 && Screen == "Home") {
+      mobileMode = !mobileMode;
+      prompt("Mobile mode turned " + (mobileMode ? "ON" : "OFF") + ".");
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 245 && World.mouseX <= 395 && World.mouseY <= 265 && Screen == "Home") {
+      chatCensor = !chatCensor;
+      prompt("Censor turned " + (chatCensor ? "ON" : "OFF") + ".");
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 270 && World.mouseX <= 395 && World.mouseY <= 290 && Screen == "Home") {
+      Screen = "Shop";
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 295 && World.mouseX <= 395 && World.mouseY <= 315 && Screen == "Home") {
+      Screen = "Theme";
+    }
+    if (World.mouseX >= 325 && World.mouseY >= 320 && World.mouseX <= 395 && World.mouseY <= 340 && Screen == "Home") {
+      var cR = prompt("Enter a room name. The name must be 3-24 characters and can include lowercase letters, numbers, underscores, and dashes. Here are some examples:\nnuman's_world\nhome\nroleplay\n" + user + "s_chat");
+      if (typeof cR == "string" && cR.length >= 3) {
+        room = formatUsername(cR + " ");
+        framesSinceRoomChange = 0;
+      }
+    }
+    if (World.mouseX <= 45 && World.mouseY <= 45 && Screen == "Shop") {
+      Screen = "Home";
+    }
+    if (World.mouseX >= 355 && World.mouseY <= 45 && Screen == "Theme") {
+      Screen = "Home";
+    }
+    if (World.mouseY >= 375 && Screen == "Home") {
+      if (mobileMode && getTime() > wait && user != "") {
+        input = prompt("Enter your message.");
+        if (typeof input == "string" && (banned.indexOf(encodeURIComponent(getUserId())) < 0 || (rank == "Admin" || rank == "Owner"))) {
+          if (input.replace(/\s/g, "").length > 0) {
+            wait = getTime() + cooldown*1000;
+            setTimeout(function () {
+              getKeyValue("msg" + formatUsername(room + " "), function (rec) {
+                if (typeof rec == "object") {
+                  rec.push({
+                    uid: encodeURIComponent(getUserId()),
+                    user: formatUsername(user),
+                    time: getTime(),
+                    msg: input.substring(0, 50)
+                  });
+                  setKeyValue("typing" + formatUsername(room + " "), "");
+                  while (rec.length >= 10) {
+                    rec.shift();
+                  }
+                  if (room == "home") {
+                    setKeyValue("coins" + encodeURIComponent(getUserId()), coins+getCoins(input));
+                  }
+                  input = "";
+                  setKeyValue("msg" + formatUsername(room + " "), rec);
+                } else {
+                  wait = getTime() + 1000;
+                  setKeyValue("typing" + formatUsername(room + " "), "");
+                  setKeyValue("msg" + formatUsername(room + " "), {
+                    uid: encodeURIComponent(getUserId()),
+                    user: formatUsername(user),
+                    time: getTime(),
+                    msg: input.substring(0, 50)
+                  });
+                  if (room == "home") {
+                    setKeyValue("coins" + encodeURIComponent(getUserId()), coins+getCoins(input));
+                  }
+                  input = "";
+                }
+              });
+            }, 300);
+          }
+        }
+      } else {
+        isTyping = true;
+      }
+    } else {
+      isTyping = false;
+    }
+  }
+  if (animForward) {
+    logo.scale += (0.5-logo.scale)*0.05;
+    shadow.scale = Math.pow(logo.scale, 2)*1.99;
+    if (logo.scale >= 0.49) {
+      animForward = false;
+    }
+  } else {
+    logo.scale -= (0.5-logo.scale)*0.05;
+    shadow.scale = Math.pow(logo.scale, 2)*1.99;
+    if (logo.scale <= 0.4) {
+      animForward = true;
+    }
+  }
+  logo.rotation += (spin-logo.rotation)*0.2;
+  getKeyValue("typing" + formatUsername(room + " "), function (rec) {
+    if (rec != user) {
+      currentlyTyping = rec;
+    }
+  });
+  if (currentlyTyping != "" && formatUsername(currentlyTyping) != formatUsername(user) && typeof currentlyTyping == "string") {
+    fill("#95BDFF");
+    textSize(10);
+    textAlign(LEFT, BASELINE);
+    text(formatUsername(currentlyTyping) + " is typing...", 5, 370);
+  }
+  if (getTime() < wait) {
+    fill("#95BDFF");
+    barX = (wait-getTime())/1000/cooldown*400;
+    shape(0, 373, barX, 373, barX, 375, 0, 375);
+  }
+  if (World.mouseX > 350 && World.mouseY > 350 && Screen == "Home") {
+    fill(rgb(102, 102, 255));
+    if (credits.bgc > 0.05) {
+      shape(0, 0, 400, 0, 400, 400, 0, 400);
+    }
+    credits.bgc += (0.9-credits.bgc)/5;
+    credits.t -= (credits.t-200)/5;
+    spin = 360;
+  } else {
+    fill(rgb(102, 102, 255));
+    if (credits.bgc > 0.05) {
+      shape(0, 0, 400, 0, 400, 400, 0, 400);
+      credits.bgc -= (credits.bgc)/5;
+    } else {
+      credits.bgc = 0;
+    }
+    credits.t += (400-credits.t)/5;
+    spin = 0;
+  }
+  fill("black");
+  textAlign(CENTER, CENTER);
+  textSize(30-((credits.t-200)/5));
+  if (credits.bgc > 0.05) {
+    text(("Messenger's User" + views.toLocaleString()) + "", credits.t, credits.t);
+    coinSprite.alpha = 1-credits.bgc;
+    bgImage.alpha = s.opacity-credits.bgc;
+  } else {
+    coinSprite.alpha = 1;
+    bgImage.alpha = s.opacity;
+  }
+  if (keyDown(BACKSPACE)) {
+    backspaceActive++;
+    if (backspaceActive >= World.frameRate/2) {
+      input = input.substring(0, input.length-1);
+      if (input.length == 0) {
+        setKeyValue("typing" + formatUsername(room + " "), "");
+      }
+    }
+  } else {
+    backspaceActive = 1;
+  }
+  fill(s.input);
+  ellipse(425, 25, 40, 40);
+  fill(s.color);
+  textAlign(CENTER, CENTER);
+  textSize(15);
+  text("Back", 425, 25);
+  if (shopThemes.length > 0 && camera.x >= 200) {
+    fill(s.color);
+    textSize(25);
+    textAlign(CENTER, TOP);
+    text("Theme Shop", 600, 5);
+    textSize(15);
+    textAlign(CENTER, CENTER);
+    text("The shop's stock changes every day!\nCollect coins by chatting in the home room.", 600, 370);
+    for (var a in shopThemes) {
+      var thisTheme = themes[shopThemes[a]];
+      if (typeof thisTheme == "object") {
+        fill(thisTheme.bg);
+        var yx = 55+(50*a)+(60*a);
+        shape(440, yx, 760, yx, 760, yx+50, 440, yx+50);
+        fill(thisTheme.theme);
+        shape(760, yx, 765, yx, 765, yx+50, 760, yx+50);
+        fill(thisTheme.input);
+        shape(445, yx+5, 755, yx+5, 755, yx+45, 445, yx+45);
+        fill(thisTheme.color);
+        textSize(20);
+        textAlign(LEFT, TOP);
+        text(thisTheme.name, 450, yx+10);
+        textSize(12);
+        textAlign(LEFT, BASELINE);
+        text(thisTheme.desc, 450, yx+40);
+        textAlign(LEFT, TOP);
+        fill(s.color);
+        text(thisTheme.price.toLocaleString() + " " + (thisTheme.price == 1 ? "coin" : "coins"), 440, yx+55);
+        fill(s.input);
+        shape(705, yx+50, 765, yx+50, 765, yx+70, 705, yx+70);
+        fill(s.color);
+        textAlign(CENTER, CENTER);
+        if (myThemes.indexOf(shopThemes[a]) >= 0) {
+          text("Owned", 735, yx+60);
+        } else {
+          text("Buy", 735, yx+60);
+          if (!purchasingTheme) {
+            if (mouseDown("left") && camera.mouseX >= 705 && camera.mouseX <= 765 && camera.mouseY >= yx+50 && camera.mouseY <= yx+70) {
+              purchasingTheme = true;
+              if (coins >= thisTheme.price) {
+                var _cT = myThemes;
+                _cT.push(shopThemes[a]);
+                var _cP = thisTheme.price;
+                setKeyValue("themes" + encodeURIComponent(getUserId()), _cT, function () {
+                  purchasingTheme = false;
+                });
+                setKeyValue("coins" + encodeURIComponent(getUserId()), coins-_cP);
+              }
+            }
+          }
+        }
+      }
+    }
+  } else {
+    textSize(30);
+    fill(s.color);
+    textAlign(CENTER, CENTER);
+    text("", 600, 200);
+  }
+  fill(s.input);
+  ellipse(-25, 25, 40, 40);
+  fill(s.color);
+  textAlign(CENTER, CENTER);
+  textSize(15);
+  text("Back", -25, 25);
+  textSize(14);
+  textAlign(CENTER, CENTER);
+  fill(s.color);
+  text("Use the up and down arrow keys to change your theme.", -200, 55);
+  fill(s.input);
+  shape(-355, 165, -45, 165, -45, 205, -355, 205);
+  textSize(20);
+  textAlign(LEFT, TOP);
+  fill(s.color);
+  text(s.name, -350, 170);
+  textAlign(LEFT, BASELINE);
+  textSize(12);
+  text(s.desc, -350, 200);
+  fill(s.theme);
+  shape(-45, 165, -40, 165, -40, 205, -45, 205);
+  textAlign(LEFT, TOP);
+  fill(s.color);
+  text("Theme " + (myThemes.indexOf(currentTheme) + 1) + "/" + myThemes.length, -355, 210);
+  textAlign(CENTER, TOP);
+  text("Theme Collection", -200, 250);
+  textSize(30);
+  text(Math.floor((myThemes.length/Object.keys(themes).length)*100) + "%", -200, 270);
+  if (keyWentDown("up") && !ignoreTheme && Screen == "Theme") {
+    if (myThemes.indexOf(currentTheme) > 0) {
+      currentTheme = myThemes[myThemes.indexOf(currentTheme) - 1];
+      ignoreTheme = true;
+      setKeyValue("theme" + encodeURIComponent(getUserId()), currentTheme, function () {
+        ignoreTheme = false;
+      });
+    }
+  }
+  if (keyWentDown("down") && !ignoreTheme && Screen == "Theme") {
+    if (myThemes.indexOf(currentTheme) < myThemes.length-1) {
+      currentTheme = myThemes[(myThemes.indexOf(currentTheme) + 1)];
+      ignoreTheme = true;
+      setKeyValue("theme" + encodeURIComponent(getUserId()), currentTheme, function () {
+        ignoreTheme = false;
+      });
+    }
+  }
+  drawSprites();
+  if (getTime() - lastUpdated >= 60000) {
+    fill(s.bg);
+    shape(75, 0, 325, 0, 325, 90, 75, 90);
+    fill(s.input);
+    shape(80, 5, 320, 5, 320, 85, 80, 85);
+    fill(s.color);
+    textAlign(LEFT, TOP);
+    textSize(15);
+    text("Updating Chat..." + formatTime(lastUpdated), 85, 10, 240);
+  }
+  textAlign(LEFT, TOP);
+  if (framesSinceRoomChange < 30) {
+    fill(s.bg);
+    rect(0, 0, 155, 25);
+    fill(s.input);
+    rect(0, 0, 150, 20);
+    fill(s.color);
+    textSize(15);
+    text(room, 5, 5);
+  } else if (framesSinceRoomChange < 40) {
+    fill(s.bg);
+    rect(0, 0, 155, 25-((framesSinceRoomChange-30)*2));
+    fill(s.input);
+    rect(0, 0, 150, 20-((framesSinceRoomChange-30)*2));
+    fill(s.color);
+    textSize(15);
+    text(room, 5, 5-((framesSinceRoomChange-30)*2));
+  }
+  framesSinceRoomChange++;
+}
+var credits = {
+  bgc: 0,
+  t: 315
+};
+var barX = (wait-getTime())/cooldown*400;
+setInterval(function () {
+  if (isTyping && keepCursor && !mobileMode) {
+    showCursor = !showCursor;
+  } else {
+    showCursor = true;
+    if (keepCursor) {
+      keepCursor = false;
+    }
+  }
+}, 500);
+function censor(input) {
+  input = input.replace(/motherfuck/gi, "fatherless");
+  input = input.replace(/fuck/gi, "crap");
+  input = input.replace(/fuk/gi, "ack");
+  input = input.replace(/shit/gi, "caca");
+  input = input.replace(/bitch/gi, "booger");
+  input = input.replace(/bich/gi, "booger");
+  input = input.replace(/cunt/gi, "im a weirdo");
+  input = input.replace(/dick/gi, "im a weirdo");
+  input = input.replace(/pussy/gi, "im a weirdo");
+  input = input.replace(/nigga/gi, "[my lawyer advised i shouldnt finish this joke]");
+  input = input.replace(/nigger/gi, "[my lawyer advised i shouldnt finish this joke]");
+  input = input.replace(/\bkkk\b/gi, "im a weirdo");
+  input = input.replace(/piss/gi, "im a weirdo");
+  input = input.replace(/vagina/gi, "im a weirdo");
+  input = input.replace(/penis/gi, "im a weirdo");
+  input = input.replace(/pussies/gi, "im a weirdo");
+  input = input.replace(/titties/gi, "im a weirdo");
+  input = input.replace(/titty/gi, "im a weirdo");
+  input = input.replace(/cock/gi, "im a weirdo");
+  input = input.replace(/hitler/gi, "im a weirdo");
+  input = input.replace(/asshole/gi, "eric cartman");
+  input = input.replace(/dumbass/gi, "eric cartman");
+  input = input.replace(/\bcum\b/gi, "im a weirdo");
+  input = input.replace(/wtf/gi, "what the devils grr >:(");
+  input = input.replace(/fuc/gi, "chez");
+  input = input.replace(/\btf\b/gi, "im a weirdo");
+  input = input.replace(/balls/gi, "im a weirdo");
+  input = input.replace(/sup/gi, "sup");
+  input = input.replace(/horny/gi, "im a weirdo");
+  input = input.replace(/boobs/gi, "im a weirdo");
+  input = input.replace(/dookie/gi, "im a weirdo");
+  input = input.replace(/deepthroat/gi, "im a weirdo");
+
+  return input;
+}
+function emojify(input) {
+  input = input.replace(/:skull:/g, "💀");
+  input = input.replace(/:coffee:/g, "☕");
+  input = input.replace(/:dam:/g, "🦫");
+  input = input.replace(/:happy:/g, "😀");
+  input = input.replace(/:big_smile:/g, "😃");
+  input = input.replace(/:smile:/g, "🙂");
+  input = input.replace(/:angry:/g, "😠");
+  input = input.replace(/:cheeks:/g, "🍑");
+  input = input.replace(/:yell:/g, "😡");
+  input = input.replace(/:swear:/g, "🤬");
+  input = input.replace(/loud_cry/g, "😭");
+  input = input.replace(/:happy_tear:/g, "🥲");
+  input = input.replace(/:tongue:/g, "😛");
+  input = input.replace(/:wink:/g, "😉");
+  input = input.replace(/:smooch:/g, "😗");
+  input = input.replace(/:laugh_loud:/g, "😂");
+  input = input.replace(/:shy:/g, "😳");
+  input = input.replace(/:banana:/g, "🍌");
+  input = input.replace(/:surprised:/g, "😮");
+  input = input.replace(/:cry:/g, "😢");
+  input = input.replace(/:cool:/g, "😎");
+  input = input.replace(/:eyeroll:/g, "🙄");
+  input = input.replace(/:heart_eyes:/g, "😍");
+  input = input.replace(/:heart:/g, "❤");
+  input = input.replace(/:red_heart:/g, "❤");
+  input = input.replace(/:orange_heart:/g, "🧡");
+  input = input.replace(/:yellow_heart:/g, "💛");
+  input = input.replace(/:green_heart:/g, "💚");
+  input = input.replace(/:blue_heart:/g, "💙");
+  input = input.replace(/:purple_heart:/g, "💜");
+  input = input.replace(/:heartbroken:/g, "💔");
+  input = input.replace(/:iced:/g, "🥶");
+  input = input.replace(/:devil:/g, "😈");
+  input = input.replace(/:i:/g, "😰");
+  input = input.replace(/:bruh:/g, "😑");
+  input = input.replace(/:AHH:/g, "😱");
+  input = input.replace(/:heh:/g, "😅");
+  input = input.replace(/:sick:/g, "🤢");
+  input = input.replace(/:upside_down:/g, "🙃");
+  input = input.replace(/:money:/g, "🤑");
+  input = input.replace(/:wierd smile:/g, "😏");
+  input = input.replace(/:moan:/g, "😩");
+  input = input.replace(/:nerd:/g, "🤓");
+  input = input.replace(/:dam:/g, "😓");
+  input = input.replace(/:eggplant:/g, "🍆");
+  input = input.replace(/:burger:/g, "🍔");
+  input = input.replace(/:ok_hand:/g, "👌");
+  input = input.replace(/:cool:/g, "👍");
+  input = input.replace(/:thumbs_down:/g, "👎");
+  input = input.replace(/:peace:/g, "✌");
+  input = input.replace(/:nails:/g, "💅");
+  input = input.replace(/:eyes:/g, "👀");
+  input = input.replace(/:eye:/g, "👁");
+  input = input.replace(/:mouth:/g, "👄");
+  input = input.replace(/:box:/g, "⬛");
+  input = input.replace(/:cat:/g, "🐱");
+  input = input.replace(/:toxic:/g, "☣");
+  input = input.replace(/:kneeling:/g, "🧎");
+  input = input.replace(/:1v1:/g, "🆚");
+  input = input.replace(/:hole:/g, "🕳");
+  input = input.replace(/:blood_type_a:/g, "🅰");
+  input = input.replace(/:blood_type_b:/g, "🅱");
+  input = input.replace(/:blood_type_ab:/g, "🆎");
+  input = input.replace(/:blood_type_o:/g, "🅾");
+  input = input.replace(/:orange:/g, "🍊");
+  input = input.replace(/:poop:/g, "💩");
+  input = input.replace(/:pride_flag:/g, "🏳‍🌈");
+  input = input.replace(/:aries:/g, "♈");
+  input = input.replace(/:taurus:/g, "♉");
+  input = input.replace(/:gemini:/g, "♊");
+  input = input.replace(/:cancer:/g, "♋");
+  input = input.replace(/:leo:/g, "♌");
+  input = input.replace(/:virgo:/g, "♍");
+  input = input.replace(/:libra:/g, "♎");
+  input = input.replace(/:scorpio:/g, "♏");
+  input = input.replace(/:sagittarius:/g, "♐");
+  input = input.replace(/:capricorn:/g, "♑");
+  input = input.replace(/:aquarius:/g, "♒");
+  input = input.replace(/:pisces:/g, "♓");
+  input = input.replace(/:moai:/g, "🤎");
+  input = input.replace(/:emo:/g, "🖤");
+  return input;
+}
+function keyTyped() {
+  if (encodeURIComponent(key) != "%0D") {
+    if (isTyping && !mobileMode && key.length == 1) {
+      input += key;
+    }
+    showCursor = true;
+    keepCursor = true;
+    input = emojify(input);
+    input = input.substring(0, 50);
+    if (input.length >= 1) {
+      if (getTime() - typeTimeout > 300) {
+        setKeyValue("typing" + formatUsername(room + " "), formatUsername(user));
+        typeTimeout = getTime();
+      }
+    } else {
+      setKeyValue("typing" + formatUsername(room + " "), "");
+    }
+  } else if (isTyping && !mobileMode) {
+    if (user != "") {
+      if (input.replace(/\s/g, "") != "" && getTime() > wait) {
+        if (banned.indexOf(encodeURIComponent(getUserId())) < 0 || (rank == "Administer" || rank == "Owner")) {
+          getKeyValue("msg" + formatUsername(room + " "), function (rec) {
+            if (typeof rec == "object") {
+              wait = getTime() + cooldown*1000;
+              rec.push({
+                uid: encodeURIComponent(getUserId()),
+                user: formatUsername(user),
+                time: getTime(),
+                msg: input.substring(0, 50)
+              });
+              setKeyValue("typing" + formatUsername(room + " "), "");
+              while (rec.length >= 10) {
+                rec.shift();
+              }
+              if (room == "home") {
+                setKeyValue("coins" + encodeURIComponent(getUserId()), coins+getCoins(input));
+              }
+              input = "";
+              setKeyValue("msg" + formatUsername(room + " "), rec);
+            } else {
+              wait = getTime() + 1000;
+              setKeyValue("typing" + formatUsername(room + " "), "");
+              setKeyValue("msg", {
+                uid: encodeURIComponent(getUserId()),
+                user: formatUsername(user),
+                time: getTime(),
+                msg: input.substring(0, 50)
+              });
+              if (room == "home") {
+                setKeyValue("coins" + encodeURIComponent(getUserId()), coins+getCoins(input));
+              }
+              input = "";
+            }
+          });
+        } else {
+          prompt("You have been Blocked for misusing chat");
+        }
+      }
+    } else {
+      prompt("You are currently in Guest Mode. Click \"Sign Up\" to choose a username.");
+    }
+  }
+  if (getUserId() == "Server") {
+    prompt("You know, this way of hacking is extremely old. If you were to hack this chat i wouldnt care. Just use a different way of hacking.");
+  }
+}
+function keyPressed() {
+  if (keyCode == BACKSPACE && isTyping) {
+    input = input.substring(0, input.length-1);
+    if (input.length == 0) {
+      setKeyValue("typing" + formatUsername(room + " "), "");
+    }
+  }
+}
+function formatUsername(i) {
+  var bypass = ["admin", "admin"];
+  if (bypass.indexOf(i) >= 0) {
+    return i;
+  } else if (typeof i == "string") {
+    return i.toLowerCase().substring(0,24).replace(/[^a-z0-9\_\-]/g, "");
+  } else {
+    return "Invalid Name";
+  }
+}
+function formatTime(time) {
+  var d = new Date();
+  var e = new Date(time);
+  var dow = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  var mo = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  if (d.getTime()-time >= -60000 && d.getTime()-time <= 60000) {
+    return "now";
+  } else if (d.getTime()-time <= 3600000) {
+    if (Math.floor((d.getTime()-time)/60000) == 1) {
+      return Math.floor((d.getTime()-time)/60000) + " min";
+    } else {
+      return Math.floor((d.getTime()-time)/60000) + " mins";
+    }
+  } else if (d.getTime()-time <= 14400000) {
+    if (Math.floor((d.getTime()-time)/3600000) == 1) {
+      return Math.floor((d.getTime()-time)/3600000) + " hr";
+    } else {
+      return Math.floor((d.getTime()-time)/3600000) + " hrs";
+    }
+  } else if (d.getMonth() + "" + d.getDate() + d.getFullYear() == e.getMonth() + "" + e.getDate() + e.getFullYear()) {
+    if (e.getHours() == 0) {
+      if (e.getMinutes() < 10) {
+        return "12:0" + e.getMinutes() + " AM";
+      } else {
+        return "12:" + e.getMinutes() + " AM";
+      }
+    } else if (e.getHours() == 12) {
+      if (e.getMinutes() < 10) {
+        return "12:0" + e.getMinutes() + " PM";
+      } else {
+        return "12:" + e.getMinutes() + " PM";
+      }
+    } else if (e.getHours() > 12) {
+      if (e.getMinutes() < 10) {
+        return (e.getHours()-12) + ":0" + e.getMinutes() + " PM";
+      } else {
+        return (e.getHours()-12) + ":" + e.getMinutes() + " PM";
+      }
+    } else {
+      if (e.getMinutes() < 10) {
+        return e.getHours() + ":0" + e.getMinutes() + " AM";
+      } else {
+        return e.getHours() + ":" + e.getMinutes() + " AM";
+      }
+    }
+  } else if (d.getTime()-time <= 604800000) {
+    if (e.getHours() == 0) {
+      if (e.getMinutes() < 10) {
+        return dow[e.getDay()] + ", 12:0" + e.getMinutes() + " AM";
+      } else {
+        return dow[e.getDay()] + ", 12:" + e.getMinutes() + " AM";
+      }
+    } else if (e.getHours() == 12) {
+      if (e.getMinutes() < 10) {
+        return dow[e.getDay()] + ", 12:0" + e.getMinutes() + " PM";
+      } else {
+        return dow[e.getDay()] + ", 12:" + e.getMinutes() + " PM";
+      }
+    } else if (e.getHours() > 12) {
+      if (e.getMinutes() < 10) {
+        return dow[e.getDay()] + ", " + (e.getHours()-12) + ":0" + e.getMinutes() + " PM";
+      } else {
+        return dow[e.getDay()] + ", " + (e.getHours()-12) + ":" + e.getMinutes() + " PM";
+      }
+    } else {
+      if (e.getMinutes() < 10) {
+        return dow[e.getDay()] + ", " + e.getHours() + ":0" + e.getMinutes() + " AM";
+      } else {
+        return dow[e.getDay()] + ", " + e.getHours() + ":" + e.getMinutes() + " AM";
+      }
+    }
+  } else if (d.getFullYear() == e.getFullYear()) {
+    if (e.getHours() == 0) {
+      if (e.getMinutes() < 10) {
+        return mo[e.getMonth()] + " " + e.getDate() + ", 12:0" + e.getMinutes() + " AM";
+      } else {
+        return mo[e.getMonth()] + " " + e.getDate() + ", 12:" + e.getMinutes() + " AM";
+      }
+    } else if (e.getHours() == 12) {
+      if (e.getMinutes() < 10) {
+        return mo[e.getMonth()] + " " + e.getDate() + ", 12:0" + e.getMinutes() + " PM";
+      } else {
+        return mo[e.getMonth()] + " " + e.getDate() + ", 12:" + e.getMinutes() + " PM";
+      }
+    } else if (e.getHours() > 12) {
+      if (e.getMinutes() < 10) {
+        return mo[e.getMonth()] + " " + e.getDate() + ", " + (e.getHours()-12) + ":0" + e.getMinutes() + " PM";
+      } else {
+        return mo[e.getMonth()] + " " + e.getDate() + ", " + (e.getHours()-12) + ":" + e.getMinutes() + " PM";
+      }
+    } else {
+      if (e.getMinutes() < 10) {
+        return mo[e.getMonth()] + " " + e.getDate() + ", " + e.getHours() + ":0" + e.getMinutes() + " AM";
+      } else {
+        return mo[e.getMonth()] + " " + e.getDate() + ", " + e.getHours() + ":" + e.getMinutes() + " AM";
+      }
+    }
+  } else {
+    return parseInt(e.getMonth() + 1, 10) + "/" + e.getDate() + "/" + e.getFullYear();
+  }
+}
+function logUsername(id) {
+  getKeyValue("username" + id, function (v) {
+    console.log(v);
+  });
+}
+function logThemes(id) {
+  getKeyValue("themes" + id, function (v) {
+    console.log(v);
+  });
+}
+function logCoins(id) {
+  getKeyValue("coins" + id, function (v) {
+    console.log(v);
+  });
+}
+function getCoins(input) {
+  return 1;
+} 
+
+
